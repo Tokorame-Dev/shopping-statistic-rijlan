@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Statistic - User</title>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <table id="ltv"></table>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="./data/data.js"></script>
+    <script>
+        let data = {};
+        owner_id.forEach((item, index) => {
+            if (data[item]) {
+                data[item] = {
+                    tagihan: data[item].tagihan += total_tagihan[index],
+                    jumlah: data[item].jumlah += 1
+                };
+            } else {
+                data[item] = {
+                    tagihan: total_tagihan[index],
+                    jumlah: 1
+                };
+            }
+        });
+
+        // let LTV = {};
+        // for (const id in data) {
+        //     LTV[id] = data[id].tagihan;
+        // }
+
+        // let AVG = {};
+        // for (const id in data) {
+        //     AVG[id] = data[id].tagihan / data[id].jumlah;
+        // }
+
+        let topTen = [];
+        let sorted = Object.entries(data).sort((a, b) => b[1].tagihan - a[1].tagihan);
+        let count = 1;
+        for (let i = 0; i < sorted.length; i++) {
+            let arr = [count, sorted[i][0], sorted[i][1].tagihan, sorted[i][1].jumlah, sorted[i][1].tagihan / sorted[i][1].jumlah];
+            topTen.push(arr);
+            count++;
+        }
+        
+        $(document).ready(() => {
+            $('#ltv').DataTable({
+                data: topTen,
+                columns: [
+                    { title: 'No' },
+                    { title: 'User ID' },
+                    { title: 'Total Tagihan' },
+                    { title: 'Jumlah Transaksi' },
+                    { title: 'Rata-rata' },
+                ]
+            });
+        });
+    </script>
+</body>
+</html>
