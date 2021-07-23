@@ -42,8 +42,24 @@
         let topTen = [];
         let sorted = Object.entries(data).sort((a, b) => b[1].tagihan - a[1].tagihan);
         let count = 1;
+        let tagihan;
+        let jumlah;
+        let rata;
+        let uid;
+
         for (let i = 0; i < sorted.length; i++) {
-            let arr = [count, sorted[i][0], sorted[i][1].tagihan, sorted[i][1].jumlah, sorted[i][1].tagihan / sorted[i][1].jumlah];
+            uid = sorted[i][0];
+            tagihan = new Number(sorted[i][1].tagihan).toLocaleString('id-ID');
+            jumlah = sorted[i][1].jumlah;
+            rata = new Number(sorted[i][1].tagihan / sorted[i][1].jumlah).toLocaleString('id-ID');
+
+            let arr = [
+                count,
+                uid,
+                'Rp' + tagihan,
+                jumlah,
+                'Rp' + rata
+            ];
             topTen.push(arr);
             count++;
         }
@@ -54,7 +70,7 @@
                 columns: [
                     { title: 'No' },
                     { title: 'User ID' },
-                    { title: 'Total Tagihan' },
+                    { title: 'Total Belanja (LTV)' },
                     { title: 'Jumlah Transaksi' },
                     { title: 'Rata-rata' },
                 ]
